@@ -1,0 +1,165 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      5930,        157]
+NotebookOptionsPosition[      5175,        138]
+NotebookOutlinePosition[      5603,        155]
+CellTagsIndexPosition[      5560,        152]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"SetDirectory", "[", 
+  RowBox[{"NotebookDirectory", "[", "]"}], "]"}]], "Input",
+ CellLabel->
+  "In[168]:=",ExpressionUUID->"cf7aef79-c007-450e-a269-974ea7ebf5c2"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"wave", "=", 
+   RowBox[{"BinaryReadList", "[", 
+    RowBox[{"\"\<pred.dat\>\"", ",", "\"\<Real64\>\""}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"axis", "=", 
+   RowBox[{"BinaryReadList", "[", 
+    RowBox[{"\"\<axis.dat\>\"", ",", "\"\<Real64\>\""}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"time", "=", 
+   RowBox[{"BinaryReadList", "[", 
+    RowBox[{"\"\<time.dat\>\"", ",", "\"\<Real64\>\""}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"nx", "=", 
+   RowBox[{"Length", "[", "axis", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"nt", "=", 
+   RowBox[{"Length", "[", "time", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"wave", "=", 
+   RowBox[{"ArrayReshape", "[", 
+    RowBox[{"wave", ",", 
+     RowBox[{"{", 
+      RowBox[{"nx", ",", "nx", ",", "nt"}], "}"}]}], "]"}]}], ";"}]}], "Input",\
+
+ CellChangeTimes->{{3.87871655781145*^9, 3.878716613500752*^9}, {
+   3.878882644427908*^9, 3.878882644829331*^9}, {3.879485956441976*^9, 
+   3.879485956672159*^9}, {3.879498727616741*^9, 3.879498745437105*^9}, 
+   3.8794994920933857`*^9, {3.879503319124362*^9, 3.87950333766317*^9}},
+ CellLabel->
+  "In[279]:=",ExpressionUUID->"3e8c2cbb-1793-46c6-aa04-1eebcd93b7dd"],
+
+Cell[BoxData[
+ RowBox[{"ListAnimate", "[", 
+  RowBox[{"Table", "[", 
+   RowBox[{
+    RowBox[{"ListPlot3D", "[", 
+     RowBox[{
+      RowBox[{"wave", "[", 
+       RowBox[{"[", 
+        RowBox[{"All", ",", "All", ",", "t"}], "]"}], "]"}], ",", 
+      RowBox[{"PlotRange", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"Max", "[", "wave", "]"}], ",", 
+         RowBox[{"Min", "[", "wave", "]"}]}], "}"}]}], ",", 
+      RowBox[{"Mesh", "\[Rule]", "None"}], ",", 
+      RowBox[{"Boxed", "\[Rule]", "False"}], ",", 
+      RowBox[{"ColorFunctionScaling", "\[Rule]", "False"}], ",", 
+      RowBox[{"ColorFunction", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"ColorData", "[", "\"\<RedBlueTones\>\"", "]"}], "[", 
+          RowBox[{"1", "-", "#3"}], "]"}], "&"}], "}"}]}]}], "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"t", ",", "30"}], "}"}]}], "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.87871655781145*^9, 3.878716613500752*^9}, {
+   3.878882644427908*^9, 3.878882644829331*^9}, {3.879485956441976*^9, 
+   3.879485956672159*^9}, {3.879498727616741*^9, 3.879498745437105*^9}, 
+   3.8794994920933857`*^9, {3.879503319124362*^9, 3.87950333766317*^9}, {
+   3.8795038915021544`*^9, 3.8795038925155573`*^9}, {3.879503963327107*^9, 
+   3.879504054596591*^9}, {3.879504086459055*^9, 3.879504103925971*^9}, {
+   3.879504150171784*^9, 3.879504168727353*^9}, {3.879504630748802*^9, 
+   3.879504631011887*^9}},
+ CellLabel->
+  "In[285]:=",ExpressionUUID->"b032aa35-7c1b-47cf-9b71-2928cac5bc0a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"frames", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"ListPlot3D", "[", 
+      RowBox[{
+       RowBox[{"wave", "[", 
+        RowBox[{"[", 
+         RowBox[{"All", ",", "All", ",", "t"}], "]"}], "]"}], ",", 
+       RowBox[{"PlotRange", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"Max", "[", "wave", "]"}], ",", 
+          RowBox[{"Min", "[", "wave", "]"}]}], "}"}]}], ",", 
+       RowBox[{"Mesh", "\[Rule]", "None"}], ",", 
+       RowBox[{"Boxed", "\[Rule]", "False"}], ",", 
+       RowBox[{"ColorFunctionScaling", "\[Rule]", "False"}], ",", 
+       RowBox[{"ColorFunction", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"ColorData", "[", "\"\<RedBlueTones\>\"", "]"}], "[", 
+           RowBox[{"1", "-", "#3"}], "]"}], "&"}], "}"}]}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "nt"}], "}"}]}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.878890176276485*^9, 3.8788901800430517`*^9}, 
+   3.8795041880278597`*^9, {3.879504268382313*^9, 3.879504272037676*^9}},
+ CellLabel->
+  "In[286]:=",ExpressionUUID->"9e015f66-1c10-4135-b631-54d814340632"],
+
+Cell[BoxData[
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<crashing_waves3.mp4\>\"", ",", "frames"}], "]"}]], "Input",
+ CellChangeTimes->{{3.8788901831240597`*^9, 3.878890194883254*^9}, {
+   3.879488152718185*^9, 3.879488155032538*^9}, {3.879503351076418*^9, 
+   3.879503354834779*^9}, 3.879505828919949*^9, {3.879506357513445*^9, 
+   3.879506357611562*^9}},
+ CellLabel->
+  "In[287]:=",ExpressionUUID->"3a53229d-9ed8-48fe-8453-fbe459200f42"]
+},
+WindowSize->{1065, 897},
+WindowMargins->{{Automatic, 303}, {36, Automatic}},
+Magnification:>1.5 Inherited,
+FrontEndVersion->"13.0 for Mac OS X x86 (64-bit) (February 4, 2022)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"cca0b5ff-c44d-46f8-b7da-ca7005ed55bd"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 187, 4, 46, "Input",ExpressionUUID->"cf7aef79-c007-450e-a269-974ea7ebf5c2"],
+Cell[748, 26, 1257, 33, 202, "Input",ExpressionUUID->"3e8c2cbb-1793-46c6-aa04-1eebcd93b7dd"],
+Cell[2008, 61, 1541, 34, 140, "Input",ExpressionUUID->"b032aa35-7c1b-47cf-9b71-2928cac5bc0a"],
+Cell[3552, 97, 1180, 29, 109, "Input",ExpressionUUID->"9e015f66-1c10-4135-b631-54d814340632"],
+Cell[4735, 128, 436, 8, 46, "Input",ExpressionUUID->"3a53229d-9ed8-48fe-8453-fbe459200f42"]
+}
+]
+*)
+
