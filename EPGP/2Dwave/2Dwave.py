@@ -41,7 +41,10 @@ Y = torch.where( ((X[:,0]-1).abs() < 1e-1) & (X[:,1].abs() < 1), 1., 0 )
 Y += torch.where( ((X[:,0] - X[:,1] + 2).abs() < 1e-1) & (X[:,1] >= 0.2) & (X[:,1] <= 1.8) , 1., 0 )
 Y = Y.view(-1,1)
 
-sn.heatmap(Y.view(n_axis, n_axis))
+X = X.to(torch.complex128)
+Y = Y.to(torch.complex128)
+
+# sn.heatmap(Y.view(n_axis, n_axis))
 
 def getVarietyPoints(base):
     x,y = base.unbind(1)
@@ -51,7 +54,8 @@ def getVarietyPoints(base):
 
 def Phi(base, X):
     pts = getVarietyPoints(base)
-    return (pts.inner(X) * 1.j).exp().mean(0)
+    # return (pts.inner(X) * 1.j).exp().mean(0)
+    return (pts.inner(X)).exp().mean(0)
 
 def train(N):
     for epoch in range(N):
@@ -81,22 +85,25 @@ min,max {train_pred.real.min().detach(),train_pred.real.max().detach()}')
 
 
 n_MC = 2000
-MC_base = (torch.randn((n_MC, 2), device=device) * 10).requires_grad_()
-S_diag = torch.full((n_MC,), -np.log(n_MC), requires_grad=True, device=device)
+# MC_axis = torch.linspace(-1,1, n_MC, device=device) * 30
+MC_base = (torch.randn((n_MC, 2), device=device) * 20.j).requires_grad_()
+# MC_base = torch.cartesian_prod(MC_axis,MC_axis).requires_grad_()
+S_diag = torch.full((n_MC,), -np.log(n_MC), requires_grad=False, device=device)
+# S_diag = torch.full((n_MC**2,), -np.log(n_MC**2), requires_grad=False, device=device)
 eps = torch.tensor(np.log(1e-2), requires_grad=True, device=device)
 
 opt = torch.optim.Adam([
     {'params': MC_base, 'lr': 1e-0},
-    {'params': [S_diag, eps], 'lr': 1e-2}])
-train(300)
+    {'params': eps, 'lr': 1e-2}])
+train(1000)
 opt = torch.optim.Adam([
     {'params': MC_base, 'lr': 1e-1},
-    {'params': [S_diag, eps], 'lr': 1e-2}])
-train(300)
+    {'params': eps, 'lr': 1e-2}])
+train(100000)
 opt = torch.optim.Adam([
     {'params': MC_base, 'lr': 1e-2},
     {'params': [S_diag, eps], 'lr': 1e-2}])
-train(300)
+train(1000)
 opt = torch.optim.Adam([
     {'params': MC_base, 'lr': 1e-3},
     {'params': [S_diag, eps], 'lr': 1e-3}])
@@ -110,13 +117,13 @@ torch.save({
     }, "state.pt")
 
 
-st = torch.load("state.pt")
+st = torch.load("state2.pt")
 MC_base = st['MC_base']
 S_diag = st['S_diag']
 eps = st['eps']
 
 # Prediction
-Phi_ = Phi(MC_base, Ps).to(device)
+Phi_ = Phi(MC_base, Ps.to(torch.complex128)).to(device)
 PhiX = Phi(MC_base, X)
 A = torch.diag_embed((eps - S_diag).exp()) + PhiX @ PhiX.H
 LA = torch.linalg.cholesky(A)
@@ -127,3 +134,10 @@ pred = pred.real
 pred.detach().cpu().numpy().tofile("pred.dat")
 axis.cpu().numpy().tofile("axis.dat")
 time.cpu().numpy().tofile("time.dat")
+
+
+plt.ion()
+f, ax = plt.subplots()
+# sn.kdeplot(x = MC_base.detach().numpy()[:,0], y = MC_base.detach().numpy()[:,1], fill=True)
+sn.scatterplot(x = MC_base.detach().numpy()[:,0], y = MC_base.detach().numpy()[:,1], s=10)
+sn.kdeplot(x = MC_base.detach().numpy()[:,0], y = MC_base.detach().numpy()[:,1], bw_adjust=0.5, fill=True)
