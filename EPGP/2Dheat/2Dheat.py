@@ -29,19 +29,18 @@ Ps = torch.cartesian_prod(axis,axis,time)
 lP = Ps.shape[0]
 
 # Heat EPGP kernel
-def k(X,XX):
-    sigma = 35
+def k(X,XX, sigma):
     x,y,t = X.split(1,1)
     xx,yy,tt = ( v.T for v in XX.split(1,1) )
     denom = 1/sigma +(2*(t+tt))
     return torch.exp(-((x-xx).square()+(y-yy).square()) / (2*denom) ) / denom
 
 
-def posterior_mean(X,Y):
+def posterior_mean(X,Y,sigma):
     Y = Y.view(-1,1)
 
-    kXX = k(X,X)
-    k_X = k(Ps,X)
+    kXX = k(X,X,sigma)
+    k_X = k(Ps,X,sigma)
 
     eps = 1e-6
     A = kXX + eps * torch.eye(kXX.shape[0], device=device)
@@ -65,10 +64,13 @@ Y += torch.where(
     (((0.5*X[:,1].square() - 2) - X[:,0]).square() < 0.1) &
     (X[:,1].abs() <= 2), 1, 0)
 
-# sn.heatmap(Y.view(n_axis,n_axis))
+# sn.heatmap(Y.view(101,101).flip(0), cbar=None, yticklabels=False, xticklabels=False)
+# plt.savefig("initial_heat.png")
 
 # Posterior
-sol = posterior_mean(X,Y)
-sol.detach().numpy().tofile("sol.dat")
+sol = posterior_mean(X,Y,20)
+sol.detach().numpy().tofile("sol20.dat")
+sol = posterior_mean(X,Y,2)
+sol.detach().numpy().tofile("sol2.dat")
 axis.numpy().tofile("axis.dat")
 time.numpy().tofile("time.dat")
