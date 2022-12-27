@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     22369,        566]
+NotebookDataLength[     22365,        566]
 NotebookOptionsPosition[     18626,        509]
-NotebookOutlinePosition[     19058,        526]
-CellTagsIndexPosition[     19015,        523]
+NotebookOutlinePosition[     19054,        526]
+CellTagsIndexPosition[     19011,        523]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -508,7 +508,7 @@ Cell[BoxData[
 }, Open  ]]
 },
 WindowSize->{963, 926},
-WindowMargins->{{-1830, Automatic}, {Automatic, -469}},
+WindowMargins->{{256, Automatic}, {Automatic, 30}},
 Magnification:>1.25 Inherited,
 FrontEndVersion->"13.0 for Mac OS X x86 (64-bit) (February 4, 2022)",
 StyleDefinitions->"Default.nb",
@@ -557,8 +557,8 @@ Cell[11497, 320, 408, 9, 37, "Input",ExpressionUUID->"7181cf86-b435-4dbd-83d4-d1
 Cell[11908, 331, 361, 8, 37, "Input",ExpressionUUID->"70d677ac-5ff8-49be-8c2b-9ca14f20c834"],
 Cell[12272, 341, 357, 8, 37, "Input",ExpressionUUID->"7631e55e-e6ee-482e-a629-f2b6824289a8"],
 Cell[12632, 351, 351, 8, 37, "Input",ExpressionUUID->"bd07046e-34f6-43c0-b957-1fbbd0c56d3d"],
-Cell[12986, 361, 1128, 21, 64, "Input",ExpressionUUID->"97cde4fe-5796-480d-bbea-5f5f6b2f3bb5"],
-Cell[14117, 384, 596, 14, 64, "Input",ExpressionUUID->"2d1d3362-69d2-4ccc-9ebf-3b67d2a7ccc3"],
+Cell[12986, 361, 1128, 21, 37, "Input",ExpressionUUID->"97cde4fe-5796-480d-bbea-5f5f6b2f3bb5"],
+Cell[14117, 384, 596, 14, 37, "Input",ExpressionUUID->"2d1d3362-69d2-4ccc-9ebf-3b67d2a7ccc3"],
 Cell[14716, 400, 344, 7, 37, "Input",ExpressionUUID->"a9f3d6dd-c19b-4118-944b-d95f814ccf54"],
 Cell[15063, 409, 356, 9, 37, "Input",ExpressionUUID->"751f5ab4-1eac-4fcf-a4fc-41c4eb1c0d69"],
 Cell[15422, 420, 565, 14, 37, "Input",ExpressionUUID->"48402af9-f897-4cc6-8007-24cb64ea53e3"],

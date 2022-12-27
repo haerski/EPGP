@@ -234,8 +234,8 @@ def trainPINN(model, optimizer, loss_func, epochs = 1000, n_collocation = 100, w
         pred = model(Xinit)
         loss_data = loss_func(pred, Yinit)
 
-        # Collocation points, unif random in [-2,2]^3 x [0,1]
-        coll = torch.rand(n_collocation, 4) * torch.tensor([4,4,4,1]) + torch.tensor([-2,-2,-2,0])
+        # Collocation points, unif random in [-1,1]^3 x [0,2]
+        coll = torch.rand(n_collocation, 4) * torch.tensor([2,2,2,2]) + torch.tensor([-1,-1,-1,0])
         coll = coll.requires_grad_().to(device)
         loss_pde = maxwell(model,coll).pow(2).mean(1).sum()
 
@@ -263,7 +263,9 @@ def trainPINN(model, optimizer, loss_func, epochs = 1000, n_collocation = 100, w
 model = PINN(7,100).to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr = 1e-3)
 loss_func = nn.MSELoss()
-trainPINN(model, optimizer, loss_func, 10000, 500, [1, 1])
+trainPINN(model, optimizer, loss_func, 9000, 500, [1, 1])
+optmizer = torch.optim.LBFGS(model.parameters(), lr=1)
+trainPINN(model, optimizer, loss_func, 1000, 500, [1, 1])
 
 model.eval()
 model(Ps).detach().flatten().numpy().tofile('PINN.dat')
@@ -286,11 +288,14 @@ for repeat in range(10):
             ep_results.loc[len(ep_results)] = [n_mc, n_data, end-start, pred.cpu().detach()]
             ep_results.to_pickle("ep_results.pkl")
         for width in [50,100,200]:
-            model = PINN(7,100).to(device)
-            optimizer = torch.optim.Adam(model.parameters(), lr = 1e-3)
+            model = PINN(7,width).to(device)
             loss_func = nn.MSELoss()
             start = t.time()
-            trainPINN(model, optimizer, loss_func, 10000, 500, [1, 1])
+            optimizer = torch.optim.Adam(model.parameters(), lr = 1e-3)
+            loss_func = nn.MSELoss()
+            trainPINN(model, optimizer, loss_func, 9000, 500, [1, 1])
+            optmizer = torch.optim.LBFGS(model.parameters(), lr=1)
+            trainPINN(model, optimizer, loss_func, 1000, 500, [1, 1])
             end = t.time()
             model.eval()
             pred = model(Ps).view_as(EBdata)
