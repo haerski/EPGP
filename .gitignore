@@ -131,4 +131,9 @@ dmypy.json
 # Generated files
 *.mp4
 *.dat
+*.pdf
+*.png
+*.pkl
+*.pt
+*.h5
 .DS_Store
