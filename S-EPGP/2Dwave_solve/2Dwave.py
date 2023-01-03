@@ -19,7 +19,7 @@ torch.manual_seed(13)
 
 
 # Sampling parameters etc
-n_axis = 101
+n_axis = 51
 n_time = 131
 
 axis = torch.linspace(-2,2,n_axis, device=device)
@@ -30,7 +30,7 @@ lP = Ps.shape[0]
 
 
 # Initial dataset
-data_axis = torch.linspace(-5,5, 251, device=device)
+data_axis = torch.linspace(-5,5, 101, device=device)
 data_time = torch.linspace(0,0,1, device=device)
 data_Ps = torch.cartesian_prod(data_axis,data_axis,time)
 
@@ -59,7 +59,7 @@ def Phi(base, X):
 
 def train(N):
     for epoch in range(N):
-        PhiX = Phi(MC_base, X)
+        PhiX = Phi(MC_base * 1.j, X)
         A = torch.diag_embed((eps - S_diag).exp()) + PhiX @ PhiX.H
         LA = torch.linalg.cholesky(A)
         alpha = torch.linalg.solve_triangular(LA, PhiX @ Y.to(torch.complex128), upper=False)
@@ -86,16 +86,16 @@ min,max {train_pred.real.min().detach(),train_pred.real.max().detach()}')
 
 n_MC = 2000
 # MC_axis = torch.linspace(-1,1, n_MC, device=device) * 30
-MC_base = (torch.randn((n_MC, 2), device=device) * 20.j).requires_grad_()
+MC_base = (torch.randn((n_MC, 2), device=device)).requires_grad_()
 # MC_base = torch.cartesian_prod(MC_axis,MC_axis).requires_grad_()
 S_diag = torch.full((n_MC,), -np.log(n_MC), requires_grad=False, device=device)
 # S_diag = torch.full((n_MC**2,), -np.log(n_MC**2), requires_grad=False, device=device)
 eps = torch.tensor(np.log(1e-2), requires_grad=True, device=device)
 
 opt = torch.optim.Adam([
-    {'params': MC_base, 'lr': 1e-0},
+    {'params': MC_base, 'lr': 1e-1},
     {'params': eps, 'lr': 1e-2}])
-train(1000)
+train(100000)
 opt = torch.optim.Adam([
     {'params': MC_base, 'lr': 1e-1},
     {'params': eps, 'lr': 1e-2}])
@@ -117,14 +117,14 @@ torch.save({
     }, "state.pt")
 
 
-st = torch.load("state2.pt")
+st = torch.load("state.pt")
 MC_base = st['MC_base']
 S_diag = st['S_diag']
 eps = st['eps']
 
 # Prediction
-Phi_ = Phi(MC_base, Ps.to(torch.complex128)).to(device)
-PhiX = Phi(MC_base, X)
+Phi_ = Phi(MC_base * 1.j, Ps.to(torch.complex128)).to(device)
+PhiX = Phi(MC_base * 1.j, X)
 A = torch.diag_embed((eps - S_diag).exp()) + PhiX @ PhiX.H
 LA = torch.linalg.cholesky(A)
 alpha = torch.linalg.solve_triangular(LA, PhiX @ Y.to(torch.complex128), upper=False)

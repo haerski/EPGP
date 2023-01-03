@@ -91,13 +91,13 @@ def getVarPoints(diracs):
 
 
 def Phi(Z, X):
-    foo = torch.stack([ noethOp(Mp, i) for i, Mp in enumerate(Z.unbind(1)) ], 1)
+    cols = torch.stack([ noethOp(Mp, i) for i, Mp in enumerate(Z.unbind(1)) ], 1)
 
-    bar = (Z.unsqueeze(-2) * X).sum(-1).exp()
+    rows = (Z.unsqueeze(-2) * X).sum(-1).exp()
 
-    foobar = bar.unsqueeze(-1) * foo.unsqueeze(-2)
+    summands = rows.unsqueeze(-1) * cols.unsqueeze(-2)
 
-    return foobar.flatten(-2,-1).flatten(1,2).mean(0)
+    return summands.flatten(-2,-1).flatten(1,2).mean(0)
 
 
 
